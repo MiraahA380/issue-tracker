@@ -31,7 +31,7 @@ const NewIssuePage = () => {
         control
     } = useForm<CreateIssueForm>({resolver: zodResolver(CreateIssueSchema)})
 
-    return (<form onSubmit={handleSubmit(
+    const onSubmit = handleSubmit(
         async (data) => {
             try {
                 setIsSubmitting(true);
@@ -41,10 +41,13 @@ const NewIssuePage = () => {
                 router.push('/issues');
 
             } catch (error) {
+                console.log(error);
                 setError('Something went wrong. Try again later.');
             }
         }
-    )} className="max-w-xl space-y-5">
+    );
+
+    return (<form onSubmit={onSubmit} className="max-w-xl space-y-5">
         {
             error &&
             <Callout.Root color='red'>
