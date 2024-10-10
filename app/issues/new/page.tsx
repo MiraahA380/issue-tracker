@@ -64,7 +64,7 @@ const NewIssuePage = () => {
         <Controller
             render={({field}) => <SimpleMDE placeholder="Description" {...field}/>}
             name='description'
-            control={control}x
+            control={control}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button>Create new issue {isSubmitting && <Loading/>}</Button>
