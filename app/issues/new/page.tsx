@@ -12,6 +12,7 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {AiFillInfoCircle} from "react-icons/ai";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Loading from "@/app/components/Loading";
 
 type CreateIssueForm = z.infer<typeof CreateIssueSchema>
 
@@ -20,6 +21,8 @@ const NewIssuePage = () => {
     const router = useRouter();
 
     const [error, setError] = useState('');
+
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const {
         register,
@@ -31,6 +34,8 @@ const NewIssuePage = () => {
     return (<form onSubmit={handleSubmit(
         async (data) => {
             try {
+                setIsSubmitting(true);
+
                 await axios.post('/api/issues', data);
 
                 router.push('/issues');
@@ -42,7 +47,7 @@ const NewIssuePage = () => {
     )} className="max-w-xl space-y-5">
         {
             error &&
-            <Callout.Root>
+            <Callout.Root color='red'>
                 <Callout.Icon>
                     <AiFillInfoCircle/>
                 </Callout.Icon>
@@ -59,10 +64,10 @@ const NewIssuePage = () => {
         <Controller
             render={({field}) => <SimpleMDE placeholder="Description" {...field}/>}
             name='description'
-            control={control}
+            control={control}x
         />
-         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Create new issue</Button>
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
+        <Button>Create new issue {isSubmitting && <Loading/>}</Button>
     </form>);
 }
 
