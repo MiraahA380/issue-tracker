@@ -5,18 +5,25 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Issue {
-    id          Int      @id @default(autoincrement())
-    title       String   @db.VarChar(255)
-    description String   @db.Text
-    created_at  DateTime @default(now())
-    updated_at  DateTime @updatedAt
+  id          Int         @id @default(autoincrement())
+  title       String      @db.VarChar(255)
+  description String      @db.Text
+  status      IssueStatus @default(OPEN)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+}
+
+enum IssueStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
 }

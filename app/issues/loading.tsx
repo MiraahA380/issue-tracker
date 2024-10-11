@@ -1,14 +1,13 @@
-import {Flex, Table, Text} from "@radix-ui/themes";
-import prisma from "@/prisma/client";
+import {Box, Flex, Table, Text} from "@radix-ui/themes";
+import {Skeleton} from '../components/index';
 import IssuesHeaderActions from "@/app/issues/IssuesHeaderActions";
-import {Link, IssueStatusBadge} from "@/app/components/index"
 
-const IssuesPage = async () => {
+const LoadingIssuePage = async () => {
 
-    const issues = await prisma.issue.findMany();
+    const issues = [1, 2, 3, 4, 5];
 
     return (
-        <div className='space-y-5 max-w-3xl'>
+        <Box as='div' className='space-y-5'>
             <IssuesHeaderActions/>
             <Table.Root variant='surface'>
                 <Table.Header>
@@ -21,28 +20,29 @@ const IssuesPage = async () => {
 
                 <Table.Body>
                     {issues.map(issue => (
-                        <Table.Row key={issue.id}>
+                        <Table.Row key={issue}>
                             <Table.Cell>
-                                <Link href={`/issues/${issue.id}`} label={issue.title}/>
+                                <Skeleton/>
                                 <Text as="div" className="md:hidden">
                                     <Flex gap="2">
-                                        <IssueStatusBadge status={issue.status}/>
-                                        <Text>
-                                            {issue.created_at.toDateString()}
-                                        </Text>
+                                        <Skeleton width="2rem"/>
+                                        <Skeleton width="5rem"/>
                                     </Flex>
                                 </Text>
                             </Table.Cell>
                             <Table.Cell className='hidden md:table-cell'>
-                                <IssueStatusBadge status={issue.status}/>
+                                <Skeleton/>
                             </Table.Cell>
-                            <Table.Cell className='hidden md:table-cell'>{issue.created_at.toDateString()}</Table.Cell>
+                            <Table.Cell className='hidden md:table-cell'>
+                                <Skeleton/>
+                            </Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
             </Table.Root>
-        </div>
+        </Box>
     );
 }
 
-export default IssuesPage;
+export default LoadingIssuePage;
+

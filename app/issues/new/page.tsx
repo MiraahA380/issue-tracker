@@ -1,6 +1,6 @@
 "use client";
 
-import {Button, Callout, Text, TextField} from "@radix-ui/themes";
+import {Button, Callout, TextField} from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import {z} from "zod";
@@ -11,8 +11,8 @@ import axios from "axios";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {AiFillInfoCircle} from "react-icons/ai";
-import ErrorMessage from "@/app/components/ErrorMessage";
-import Loading from "@/app/components/Loading";
+import {ErrorMessage, Loading} from "@/app/components/index";
+
 
 type CreateIssueForm = z.infer<typeof CreateIssueSchema>
 
