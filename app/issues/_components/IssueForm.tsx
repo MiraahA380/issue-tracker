@@ -1,11 +1,10 @@
 "use client";
 
 import {Button, Callout, TextField} from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {CreateIssueSchema} from "@/app/schemas";
+import {IssueSchema} from "@/app/schemas";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
 import {useRouter} from "next/navigation";
@@ -13,9 +12,14 @@ import {useState} from "react";
 import {AiFillInfoCircle} from "react-icons/ai";
 import {ErrorMessage, Loading} from "@/app/components/index";
 import {Issue} from "@prisma/client";
+import dynamic from "next/dynamic";
+
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"),
+    {ssr: false}
+);
 
 
-type IssueFormData = z.infer<typeof CreateIssueSchema>
+type IssueFormData = z.infer<typeof IssueSchema>
 
 const IssueForm = ({issue}: { issue?: Issue }) => {
 
@@ -30,16 +34,21 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
         formState: {errors},
         handleSubmit,
         control
-    } = useForm<IssueFormData>({resolver: zodResolver(CreateIssueSchema)})
+    } = useForm<IssueFormData>({resolver: zodResolver(IssueSchema)})
 
     const onSubmit = handleSubmit(
         async (data) => {
             try {
                 setIsSubmitting(true);
 
-                await axios.post('/api/issues', data);
+                if (issue)
+                    await axios.patch(`/api/issues/${issue.id}`, data)
+                else
+                    await axios.post('/api/issues', data);
 
                 router.push('/issues');
+
+                router.refresh();
 
             } catch (error) {
                 console.log(error);
@@ -73,7 +82,9 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
                 control={control}
             />
             <ErrorMessage>{errors.description?.message}</ErrorMessage>
-            <Button>Create new issue {isSubmitting && <Loading/>}</Button>
+            <Button>
+                {issue ? 'Update issue' : 'Create new issue'}
+                {isSubmitting && <Loading/>}</Button>
         </form>
     );
 }

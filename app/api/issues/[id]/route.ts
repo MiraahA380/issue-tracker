@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
-import {CreateIssueSchema} from "@/app/schemas";
+import {IssueSchema} from "@/app/schemas";
 import prisma from "@/prisma/client";
 import {notFound} from "next/navigation";
 
@@ -8,10 +8,9 @@ export async function PATCH(
     {params}: { params: { id: string } }
 ) {
 
-
     const body = await request.json();
 
-    const validation = CreateIssueSchema.safeParse(body);
+    const validation = IssueSchema.safeParse(body);
 
     if (!validation.success) {
         return NextResponse.json(validation.error.format(), {status: 400})
