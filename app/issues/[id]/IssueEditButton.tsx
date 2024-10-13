@@ -4,7 +4,6 @@ import Link from "next/link";
 
 const IssueEditButton = ({issueId}: { issueId: string }) => {
     return (
-        <>
             <Flex>
                 <Button>
                     <Pencil2Icon/>
@@ -13,7 +12,6 @@ const IssueEditButton = ({issueId}: { issueId: string }) => {
                     </Link>
                 </Button>
             </Flex>
-        </>
     );
 }
 
