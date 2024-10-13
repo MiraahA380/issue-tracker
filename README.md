@@ -7,7 +7,7 @@ First, install npm and run the development server:
 ```bash
 npm install 
 
-npm run dev
+npx prisma migrate dev
 ```
 
 ## Setup environment
@@ -17,7 +17,9 @@ npm run dev
 - After setting up the database and the database connection, you need to run migrations with the following command.
 
 ``` bash
- npx prisma migrate dev
+npm run build
+
+npm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
