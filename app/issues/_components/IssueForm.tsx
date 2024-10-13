@@ -12,11 +12,7 @@ import {useState} from "react";
 import {AiFillInfoCircle} from "react-icons/ai";
 import {ErrorMessage, Loading} from "@/app/components/index";
 import {Issue} from "@prisma/client";
-import dynamic from "next/dynamic";
-
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"),
-    {ssr: false}
-);
+import SimpleMDE from "react-simplemde-editor";
 
 
 type IssueFormData = z.infer<typeof IssueSchema>
