@@ -5,13 +5,17 @@ import {TrashIcon} from "@radix-ui/react-icons";
 import prisma from "@/prisma/client";
 import {notFound, useRouter} from "next/navigation";
 import axios from "axios";
+import {MdOutlineDangerous} from "react-icons/md";
+import {useState} from "react";
 
 const IssueDeleteButton = ({issueId}: { issueId: string }) => {
+
+    const [error, setError] = useState(false)
 
     const router = useRouter();
 
     return (
-        <Flex>
+        <>
             <AlertDialog.Root>
                 <AlertDialog.Trigger>
                     <Button color='red'>
@@ -32,14 +36,13 @@ const IssueDeleteButton = ({issueId}: { issueId: string }) => {
                             <Button variant='soft' color='gray'>Cancel</Button>
                             <Button color='red' onClick={async () => {
                                 try {
-
                                     await axios.delete(`/api/issues/${issueId}`);
 
                                     router.push(`/issues`);
 
                                     router.refresh();
                                 } catch (error) {
-                                    console.log(error);
+                                    setError(true);
                                 }
                             }
                             }>Delete issue</Button>
@@ -47,7 +50,16 @@ const IssueDeleteButton = ({issueId}: { issueId: string }) => {
                     </AlertDialog.Action>
                 </AlertDialog.Content>
             </AlertDialog.Root>
-        </Flex>
+
+            <AlertDialog.Root open={error}>
+                <AlertDialog.Content>
+                    <AlertDialog.Description>
+                        Oops... An unexpected error occurred
+                    </AlertDialog.Description>
+                    <Button color='gray' mt='4' onClick={() => setError(false)}>Close</Button>
+                </AlertDialog.Content>
+            </AlertDialog.Root>
+        </>
     );
 }
 
