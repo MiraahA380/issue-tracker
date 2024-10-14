@@ -10,7 +10,7 @@ import axios from "axios";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {AiFillInfoCircle} from "react-icons/ai";
-import {ErrorMessage, Loading} from "@/app/components/index";
+import {ErrorMessage, Spinner} from "@/app/components/index";
 import {Issue} from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
 
@@ -80,7 +80,7 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
             <ErrorMessage>{errors.description?.message}</ErrorMessage>
             <Button>
                 {issue ? 'Update issue' : 'Create new issue'}
-                {isSubmitting && <Loading/>}</Button>
+                {isSubmitting && <Spinner/>}</Button>
         </form>
     );
 }
