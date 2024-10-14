@@ -23,7 +23,7 @@ const IssueDetailPage = async ({params: {id}}: { params: { id: string } }) => {
             <Box>
                 <Flex gap='2'>
                     <IssueEditButton issueId={id}/>
-                    <IssueDeleteButton issueId={parseInt(id)}/>
+                    <IssueDeleteButton issueId={id}/>
                 </Flex>
             </Box>
         </Grid>
