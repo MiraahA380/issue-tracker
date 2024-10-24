@@ -1,13 +1,31 @@
 import {Flex, Table, Text} from "@radix-ui/themes";
-import prisma from "@/prisma/client";
 import IssuesHeaderActions from "@/app/issues/IssuesHeaderActions";
 import {Link, IssueStatusBadge} from "@/app/components/index"
+import api from "@/lib/axios";
+import {AxiosError} from "axios";
+import {Issue} from "@prisma/client";
+
+const getIssueList = async () => {
+    try {
+        const response = await api.get<{ data: Issue[] }>('/issues');
+        return response.data.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            throw new Error(error.response?.data.message || 'API request failed');
+        } else {
+            throw new Error('An unexpected error occurred');
+        }
+    }
+}
 
 const IssuesPage = async () => {
 
-    const issues = await prisma.issue.findMany();
+    // const response = await api.get('/issues');
+
+    const issues = await getIssueList();
 
     return (
+
         <div className='space-y-5 max-w-3xl'>
             <IssuesHeaderActions/>
             <Table.Root variant='surface'>
@@ -28,7 +46,7 @@ const IssuesPage = async () => {
                                     <Flex gap="2">
                                         <IssueStatusBadge status={issue.status}/>
                                         <Text>
-                                            {issue.created_at.toDateString()}
+                                            {issue.created_at}
                                         </Text>
                                     </Flex>
                                 </Text>
@@ -36,7 +54,7 @@ const IssuesPage = async () => {
                             <Table.Cell className='hidden md:table-cell'>
                                 <IssueStatusBadge status={issue.status}/>
                             </Table.Cell>
-                            <Table.Cell className='hidden md:table-cell'>{issue.created_at.toDateString()}</Table.Cell>
+                            <Table.Cell className='hidden md:table-cell'>{issue.created_at}</Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>

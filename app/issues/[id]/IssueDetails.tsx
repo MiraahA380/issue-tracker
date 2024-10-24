@@ -10,7 +10,8 @@ const IssueDetails = ({issue}: { issue: Issue }) => {
             <Heading>{CapitalizeFirstLetter(issue.title)}</Heading>
             <Flex gap="2">
                 <IssueStatusBadge status={issue.status}/>
-                <Text as='p'>{issue.created_at.toDateString()}</Text>
+
+                <Text as='p'>{issue.created_at}</Text>
             </Flex>
             <Card className='mt-4 prose'>
                 <ReactMarkdown>
